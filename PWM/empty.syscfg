@@ -1,0 +1,40 @@
+/**
+ * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
+ * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
+ * @cliArgs --device "MSPM0L130X" --package "VQFN-32(RHB)" --part "Default" --product "mspm0_sdk@1.00.00.04"
+ * @versions {"tool":"1.15.0+2826"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const PWM    = scripting.addModule("/ti/driverlib/PWM", {}, false);
+const PWM1   = PWM.addInstance();
+const SYSCTL = scripting.addModule("/ti/driverlib/SYSCTL");
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+PWM1.$name                   = "PWM_0";
+PWM1.clockPrescale           = 256;
+PWM1.timerStartTimer         = true;
+PWM1.ccIndex                 = [1];
+PWM1.timerCount              = 200;
+PWM1.interrupts              = ["LOAD_EVENT"];
+PWM1.peripheral.$assign      = "TIMG0";
+PWM1.PWM_CHANNEL_1.$name     = "ti_driverlib_pwm_PWMTimerCC0";
+PWM1.PWM_CHANNEL_1.dutyCycle = 10;
+
+const Board = scripting.addModule("/ti/driverlib/Board", {}, false);
+
+
+/**
+ * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+ * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+ * re-solve from scratch.
+ */
+PWM1.peripheral.ccp1Pin.$suggestSolution   = "ball.17";
+Board.peripheral.$suggestSolution          = "DEBUGSS";
+Board.peripheral.swclkPin.$suggestSolution = "ball.24";
+Board.peripheral.swdioPin.$suggestSolution = "ball.23";
+SYSCTL.peripheral.$suggestSolution         = "SYSCTL";
